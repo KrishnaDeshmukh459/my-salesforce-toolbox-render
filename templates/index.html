@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto "
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Gabarito "
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Sulphur Point"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Ubuntu"
+      rel="stylesheet"
+    />
+
+    <title>My Salesforce ToolBox</title>
+  </head>
+  <body>
+    <p></p>
+    <h1>my salesforce toolbox.</h1>
+    <p></p>
+    <p></p>
+    <br>
+    <div class="tools-container">
+      <!-- KA Tool starts here -->
+      <div class="tool-section">
+        <h2>Knowledge Articles Tool</h2>
+        <br>
+        
+        <div class="download-link-container">
+          <a
+            href="{{ url_for('download_template_csv') }}"
+            class="btn btn-primary"
+            >Download Template CSV</a
+          >
+          <br />
+          <p>
+        </div>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+          <div>
+            <label class="small" for="csv_File">Select CSV File:</label>
+            <input type="file" id="csv_File" name="csv_File" accept=".csv" />
+            <!-- <label class="small" for="user_input">Data Category:</label> -->
+            <!-- <input type="text" id="user_input" name="user_input" placeholder="Enter text..."> -->
+
+            <button class="custom-button" type="button" id="uploadButton">
+              GO
+            </button>
+            <!-- Add an event listener to the "Download ZIP" button -->
+            <button class="custom-button" id="downloadZipButton" type="button">Download ZIP</button>
+          </div>
+        </form>
+
+        <div id="uploadMessage" style="display: none"></div>
+      </div>
+      <!-- KA Tool ends here     -->
+
+      <head>
+        <title>XML Generator</title>
+      </head>
+      <!-- Custom Labels tool starts here -->
+      <div class="tool-section">
+        <h2>Custom Labels Tool</h2>
+        <br>
+        
+        <form method="POST" action="/generate_and_download_xml">
+          <!-- <label class="small" for="xml_user_input"
+            >Enter Label Names (separated by space, comma, or newline):</label
+          > -->
+          <br>
+          <p>
+          <button class="custom-button" type="submit">Generate XML</button>
+          <br>
+          <br>
+          <textarea
+            id="xml_user_input"
+            name="xml_user_input"
+            placeholder="Enter Label Names (separated by space, comma, or newline)..."
+          ></textarea>
+          <!-- <button class="custom-button" type="submit">Generate XML</button> -->
+        </form>
+      </div>
+      <!-- Custom label tool ends here -->
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the default form submission
+          const xmlUserInput = document.getElementById("xml_user_input").value;
+
+          if (!xmlUserInput) {
+            alert("Please enter some words.");
+            return;
+          }
+
+          // Send the user input to the server to generate and download the XML file
+          fetch("/generate_and_download_xml", {
+            method: "POST",
+            body: new URLSearchParams({ xml_user_input: xmlUserInput }),
+          })
+            .then((response) => {
+              if (response.status === 200) {
+                alert("XML Download Successful");
+              } else {
+                alert("XML Download Failed. Please try again.");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const uploadButton = document.getElementById("uploadButton");
+        uploadButton.addEventListener("click", uploadFile);
+      });
+
+      // Add an event listener to the "Download ZIP" button
+      const downloadZipButton = document.getElementById("downloadZipButton");
+      downloadZipButton.addEventListener("click", downloadZipFile);
+
+      function uploadFile() {
+        console.log("Script loaded");
+        const csvFileInput = document.getElementById("csv_File");
+        //const userFileInput = document.getElementById('user_input');
+        const csvFile = csvFileInput.files[0];
+        //const userText = userFileInput.value;
+
+        if (!csvFile) {
+          alert("Please select a CSV file");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("csv_File", csvFile);
+        //formData.append('user_input', userText);
+
+        fetch("/upload", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (response.status === 200) {
+              alert("Upload Successful");
+              <!-- downloadZipButton.removeAttribute('disabled'); -->
+            } else {
+              alert("Upload Failed. Please try again.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      // Function to trigger the ZIP file download
+      function downloadZipFile() {
+        // Redirect to the /download_zip endpoint to trigger the download
+        <!-- window.location.href = '/download_zip'; -->
+        // Create an anchor element
+        const downloadLink = document.createElement("a");
+        downloadLink.href = "/download_zip"; // Set the URL of the ZIP file on the server
+        //downloadLink.download = 'your_filename.zip'; // Set the desired filename for the downloaded file
+
+        // Programmatically click the download link
+        downloadLink.click();
+      }
+    </script>
+
+    <style>
+      body {
+         
+        background-color:#D8F9FC ;
+        background-image: url("https://wallpapercave.com/wp/wp5315393.png");
+        /* Set the background image */
+        background-size: cover; /* Cover the entire viewport with the background image */
+        background-position: center; /* Center the background image */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+        margin: 0; /* Remove default margin */
+        font-family: "Sulphur Point", sans-serif; /* Set default font family */
+         /* Apply the animation */
+        <!-- animation: colorOverlay 10s infinite; /* Adjust the duration as needed */ -->
+      }
+      <!-- @keyframes colorOverlay {
+        0% {
+            background-color: rgba(255, 0, 0, 0.5);
+        }
+        50% {
+            background-color: rgba(0, 255, 0, 0.5);
+        }
+        100% {
+            background-color: rgba(255, 0, 0, 0.5);
+        }
+    } -->
+
+
+    
+    
+      h1 {
+        font-family: "Sulphur Point", sans-serif;
+        font-size: 60px;
+        font-weight: bolder;
+        text-align: center;
+        padding: 10px;
+        color:black;
+        border-radius: 30px;
+        border: 4px solid #800080; /* Default border color */
+        transition: border-color 0.3s ease;
+        max-width: 800px; /* Set a maximum width for the h1 element */
+        margin: 0 auto; /* Center the h1 element horizontally */
+        
+        
+      }
+
+      h2 {
+        font-family: "Ubuntu", sans-serif;
+        font-size: 35px;
+        font-weight: bold;
+        text-align: center;
+        
+        //font-style: italic;
+      }
+
+      .small {
+        font-family: "Roboto", sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        //font-style: italic;
+      }
+      .download-link-container {
+        margin-bottom: 10px;
+      }
+
+      .tools-container {
+        display: flex;
+        justify-content: space-around;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .tool-section {
+        flex: 1;
+        margin: 0 10px;
+        border: 2px solid #800080; /* Add border style */
+        border-radius: 20px; /* Optional: Add border-radius for rounded corners */
+        padding: 15px; /* Op*/
+        background-color: rgba(228, 179, 254, 0.4); 
+        box-shadow: 0 14px 16px rgba(0, 0, 0, 0.1); 
+    
+
+    }
+
+    .custom-button {
+        font-family: "Ubuntu", sans-serif;
+        font-size: 13px;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px 10px;
+        background-color: #A303F8; /* Blue background color */
+        color: #fff; /* White text color */
+        border: 2px solid #A303F8; /* Blue border color */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Smooth transition on hover */
+    }
+    
+    .custom-button:hover {
+        background-color: #5B008C; /* Darker blue on hover */
+        border-color: #5B008C; /* Darker border color on hover */
+    }
+    
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        box-sizing: border-box;
+        border: 2px solid #3498db; /* Border color */
+        border-radius: 5px;
+        font-family: "Roboto", sans-serif;
+        font-size: 14px;
+        resize: vertical; /* Allow vertical resizing */
+    }
+    
+    textarea:focus {
+        outline: none; /* Remove the default focus outline */
+        border-color: #ff5733; /* Change border color on focus */
+        box-shadow: 0 0 5px rgba(255, 87, 51, 0.5); /* Add a subtle box shadow on focus */
+    }
+    </style>
+  </body>
+</html>

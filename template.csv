@@ -1,0 +1,26 @@
+﻿IsMasterLanguage,Sequence__c,Title,Answer,Language,datacategorygroup.Help_Page_FAQ
+1,2,"I forgot my Username, what do I do?  ","This is a new para.
+
+Yes yes, this is second paragraph..
+
+Yes yes yes, this is third paragraph.
+
+This is a sample text with multiple paragraphs. 
+1. This is a bullet point.
+2. Another bullet point.
+2.1. This is a child bullet point.
+2.2. This is another child bullet point.
+3. Back to the main bullet point.
+
+This is the second paragraph.
+
+4. A new set of bullet points.
+4.1. First bullet point.
+4.2. Second bullet point.
+4.2.1. Sub-bullet point.
+4.2.2. Another sub-bullet point.
+4.3. Third bullet point.
+5. End of bullet points.",en_US,cp_helpdesk
+0,2,"Necesito ayuda en otro idioma, ¿me puede ayudar el servicio de asistencia técnica de MI Bridges?","Necesito ayuda en otro idioma, ¿me puede ayudar el servicio de asistencia técnica de MI Bridges?
+",es,cp_helpdesk
+0,2,"أحتاج إلى مساعدة بلغة أخرى ، هل يمكن لمكتب مساعدة ماي بريدچس الاستمرار في مساعدتي؟","أحتاج إلى مساعدة بلغة أخرى ، هل يمكن لمكتب مساعدة ماي بريدچس الاستمرار في مساعدتي؟",ar,cp_helpdesk
